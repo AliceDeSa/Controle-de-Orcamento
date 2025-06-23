@@ -3,49 +3,55 @@ const categoriasMetas = {
     label: "Custo fixo",
     initialValue: 40,
     color: "#3498db",
-    recommendation: "(50% a 60%)",
+    // Removendo a recomendação duplicada daqui, pois já está no HTML
     description:
-      "Despesas essenciais e fixas para sua sobrevivência e moradia. Ex: aluguel, contas de luz/água, transporte, alimentação básica."
+      "Despesas essenciais e fixas. Ex: Aluguel, contas de luz/água, transporte, Financiamento, alimentação básica.",
+    placeholder: "Ex: Aluguel, conta de luz" // Novo: Placeholder para a Tela 2
   },
   "meta-conforto": {
     label: "Conforto",
     initialValue: 20,
     color: "#1abc9c",
-    recommendation: "(10% a 20%)",
+    // Removendo a recomendação duplicada daqui
     description:
-      "Gastos para melhorar seu bem-estar diário e pequenas conveniências. Ex: lazer leve, streamings, pequenos mimos, academia."
+      "Gastos para melhorar seu bem-estar diário e pequenas conveniências. Ex: Assinaturas de streaming, academia, eletrodomésticos, pequenos mimos.",
+    placeholder: "Ex: Academia, Netflix" // Novo: Placeholder para a Tela 2
   },
   "meta-conhecimento": {
     label: "Conhecimento",
     initialValue: 5,
     color: "#9b59b6",
-    recommendation: "(5% a 10%)",
+    // Removendo a recomendação duplicada daqui
     description:
-      "Investimentos em educação, cursos, livros ou workshops para seu desenvolvimento pessoal e profissional."
+      "Investimentos em educação, cursos, livros ou workshops para seu desenvolvimento pessoal e profissional.",
+    placeholder: "Ex: Curso de inglês, livros" // Novo: Placeholder para a Tela 2
   },
   "meta-prazer": {
     label: "Prazeres",
     initialValue: 5,
     color: "#f39c12",
-    recommendation: "(5% a 10%)",
+    // Removendo a recomendação duplicada daqui
     description:
-      "Dinheiro para hobbies, viagens, experiências e luxos que trazem alegria. Ex: jantares fora, eventos, eletrônicos."
+      "Pequeninos presentes para si: sair com os amigos, iFood, cinema, eventos, eletrônicos. Permite ter momentos de alegria sem comprometer o orçamento.",
+    placeholder: "Ex: Jantar fora, cinema,iFood" // Novo: Placeholder para a Tela 2
   },
   "meta-liberdade": {
     label: "Liberdade Financeira",
     initialValue: 25,
     color: "#2ecc71",
-    recommendation: "(15% a 25%)",
+    // Removendo a recomendação duplicada daqui
     description:
-      "Economias e investimentos para construir segurança financeira e independência futura. Ex: reserva de emergência, aposentadoria, investimentos de longo prazo."
+      "Economias e investimentos para construir segurança financeira e independência futura. Ex: Reserva de emergência, aposentadoria, investimentos de longo prazo.",
+    placeholder: "Ex: Reserva de emergência" // Novo: Placeholder para a Tela 2
   },
   "meta-metas": {
     label: "Metas",
     initialValue: 5,
     color: "#f1c40f",
-    recommendation: "(5% a 15%)",
+    // Removendo a recomendação duplicada daqui
     description:
-      "Verba destinada a objetivos específicos de curto ou médio prazo. Ex: compra de carro, entrada de imóvel, intercâmbio, grandes viagens."
+      "Verba destinada a objetivos específicos de curto ou médio prazo. Ex: compra de carro, entrada de imóvel, intercâmbio, grandes viagens.",
+    placeholder: "Ex: Viagem, entrada do carro" // Novo: Placeholder para a Tela 2
   }
 };
 const MIN_RENDA = 1518;
@@ -281,16 +287,18 @@ function carregarValoresSalvos() {
 }
 
 function setupSliderTooltip(sliderContainer) {
-  const tooltipText = sliderContainer.getAttribute("data-tooltip");
-  if (!tooltipText) return;
-  const tooltipDiv = document.createElement("div");
-  tooltipDiv.className = "tooltip";
-  tooltipDiv.textContent = tooltipText;
-  sliderContainer.appendChild(tooltipDiv);
+  // A descrição já está no HTML, o JS não precisa adicionar o tooltip para os sliders da tela 1
+  // Removido o código que criava o tooltip aqui para evitar duplicação.
+  // O tooltip da Tela 1 é gerenciado puramente via CSS e o atributo data-tooltip no HTML.
 }
 
 // Função para adicionar tooltips aos títulos das categorias na Tela 2
 function setupCategoryTooltip(element, tooltipText) {
+  // Verifique se o tooltip já existe para evitar duplicação se a função for chamada múltiplas vezes
+  if (element.querySelector(".tooltip")) {
+    element.querySelector(".tooltip").textContent = tooltipText;
+    return;
+  }
   const tooltipDiv = document.createElement("div");
   tooltipDiv.className = "tooltip";
   tooltipDiv.textContent = tooltipText;
@@ -497,9 +505,9 @@ function renderizarMetasValoresFixos() {
   const metas = JSON.parse(localStorage.getItem("metasUsuario"));
   const metasValoresFixosDiv = document.getElementById("metasValoresFixos");
   let htmlContent = `
-        <h2>Metas</h2>
-        <div class="card-content">
-    `;
+            <h2>Metas</h2>
+            <div class="card-content">
+        `;
   for (const chave in categoriasMetas) {
     const nomeDisplay = categoriasMetas[chave].label;
     const percentual = metas[chave];
@@ -520,56 +528,58 @@ function renderizarSecoesGastos() {
     const metaInfo = categoriasMetas[chaveMeta];
     const nomeDisplay = metaInfo.label;
     const description = metaInfo.description;
-    const sectionHtml = `
-                            <div class="card-section">
-                                <h2 id="title-${nomeDisplay.replace(
-                                  /\s/g,
-                                  ""
-                                )}">
-                                    ${nomeDisplay}
-                                </h2>
-                                
-                                <div class="add-item-controls">
-                                    <div class="input-field-group">
-                                        <label for="descricao-${nomeDisplay.replace(
-                                          /\s/g,
-                                          ""
-                                        )}">Descrição:</label>
-                                        <input type="text" id="descricao-${nomeDisplay.replace(
-                                          /\s/g,
-                                          ""
-                                        )}" placeholder="Ex: Conta de luz">
-                                    </div>
-                                    <div class="input-field-group">
-                                        <label for="valorGasto-${nomeDisplay.replace(
-                                          /\s/g,
-                                          ""
-                                        )}">Valor (R$):</label>
-                                        <input type="text" id="valorGasto-${nomeDisplay.replace(
-                                          /\s/g,
-                                          ""
-                                        )}" placeholder="Ex: 150,00">
-                                    </div>
-                                    <button class="adicionar" 
-                                        onclick="adicionarItemGasto('${nomeDisplay}')">Adicionar</button>
-                                </div>
+    const placeholderText = metaInfo.placeholder; // Obtém o placeholder da categoria
 
-                                <ul class="category-items-list" id="list-${nomeDisplay.replace(
-                                  /\s/g,
-                                  ""
-                                )}">
-                                </ul>
-                                <div class="category-subtotal-line">
-                                    <span>Total Gasto:</span>
-                                    <span id="subtotal-${nomeDisplay.replace(
-                                      /\s/g,
-                                      ""
-                                    )}">R$ ${formatarValorParaExibicao(
+    const sectionHtml = `
+                                    <div class="card-section">
+                                        <h2 id="title-${nomeDisplay.replace(
+                                          /\s/g,
+                                          ""
+                                        )}">
+                                            ${nomeDisplay}
+                                        </h2>
+                                        
+                                        <div class="add-item-controls">
+                                            <div class="input-field-group">
+                                                <label for="descricao-${nomeDisplay.replace(
+                                                  /\s/g,
+                                                  ""
+                                                )}">Descrição:</label>
+                                                <input type="text" id="descricao-${nomeDisplay.replace(
+                                                  /\s/g,
+                                                  ""
+                                                )}" placeholder="${placeholderText}">
+                                            </div>
+                                            <div class="input-field-group">
+                                                <label for="valorGasto-${nomeDisplay.replace(
+                                                  /\s/g,
+                                                  ""
+                                                )}">Valor (R$):</label>
+                                                <input type="text" id="valorGasto-${nomeDisplay.replace(
+                                                  /\s/g,
+                                                  ""
+                                                )}" placeholder="Ex: 150,00">
+                                            </div>
+                                            <button class="adicionar" 
+                                                onclick="adicionarItemGasto('${nomeDisplay}')">Adicionar</button>
+                                        </div>
+
+                                        <ul class="category-items-list" id="list-${nomeDisplay.replace(
+                                          /\s/g,
+                                          ""
+                                        )}">
+                                        </ul>
+                                        <div class="category-subtotal-line">
+                                            <span>Total Gasto:</span>
+                                            <span id="subtotal-${nomeDisplay.replace(
+                                              /\s/g,
+                                              ""
+                                            )}">R$ ${formatarValorParaExibicao(
       0
     )}</span>
-                                </div>
-                            </div>
-                        `;
+                                        </div>
+                                    </div>
+                                `;
     detalhamentoCategoriasDiv.innerHTML += sectionHtml;
   }
   for (const chaveMeta in categoriasMetas) {
@@ -688,13 +698,13 @@ function atualizarTabelaResumo() {
     }
 
     corpoTabela.innerHTML += `
-            <tr>
-                <td>${nomeDisplay}</td>
-                <td>R$ ${formatarValorParaExibicao(orcado)}</td>
-                <td>R$ ${formatarValorParaExibicao(real)}</td>
-                <td style="color: ${diferencaCor};">R$ ${diferencaFormatada}</td>
-            </tr>
-        `;
+                <tr>
+                    <td>${nomeDisplay}</td>
+                    <td>R$ ${formatarValorParaExibicao(orcado)}</td>
+                    <td>R$ ${formatarValorParaExibicao(real)}</td>
+                    <td style="color: ${diferencaCor};">R$ ${diferencaFormatada}</td>
+                </tr>
+            `;
   }
 
   // Atualiza a nova seção de totais abaixo da tabela
@@ -833,9 +843,10 @@ window.onload = function () {
   });
   atualizarGraficoPizza();
   atualizarTotal();
-  document.querySelectorAll(".slider-container").forEach((container) => {
-    setupSliderTooltip(container);
-  });
+  // Não precisamos mais do setupSliderTooltip para a Tela 1, pois já está no HTML
+  // document.querySelectorAll(".slider-container").forEach((container) => {
+  //   setupSliderTooltip(container);
+  // });
   const inputRenda = document.getElementById("inputRenda");
   inputRenda.addEventListener("input", formatarRendaAoDigitar);
   inputRenda.addEventListener("blur", formatarRendaAoSairFoco);
