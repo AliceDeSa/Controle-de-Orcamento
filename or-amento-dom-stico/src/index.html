@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Controle de Metas Financeiras</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <style>
+    /* Inclua o CSS fornecido abaixo aqui */
+    /* Link para o seu arquivo CSS externo, se for o caso */
+  </style>
+</head>
+
+<body>
+
+  <div id="tela1" class="screen-container">
+    <header class="main-header">
+      <div class="header-content-wrapper">
+        <div class="titulo-container">
+          <h1>Metas</h1>
+          <p>Edite os itens abaixo para ajustar suas metas.</p>
+        </div>
+        <div class="header-right-content">
+          <div id="feedback-salvar" class="feedback-message"></div>
+          <div class="button-group">
+            <button class="salvar" onclick="salvarMetas()">Salvar</button>
+            <button class="resetar" onclick="resetarValores()">Resetar valores</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="left-column-content">
+      <div class="grafico-container">
+        <div class="grafico-wrapper">
+          <div class="total-no-donut" id="total-porcentagem">100%</div>
+          <canvas id="graficoPizza"></canvas>
+        </div>
+        <ul class="legenda">
+          <li><span class="legenda-cor" style="background-color: #3498db;"></span>Custo fixo</li>
+          <li><span class="legenda-cor" style="background-color: #1abc9c;"></span>Conforto</li>
+          <li><span class="legenda-cor" style="background-color: #9b59b6;"></span>Conhecimento</li>
+          <li><span class="legenda-cor" style="background-color: #f39c12;"></span>Prazeres</li>
+          <li><span class="legenda-cor" style="background-color: #2ecc71;"></span>Liberdade Financeira</li>
+          <li><span class="legenda-cor" style="background-color: #f1c40f;"></span>Metas</li>
+        </ul>
+      </div>
+
+      <div class="renda-container card-section">
+        <p class="renda-title">Renda Total Mensal </p>
+        <div class="renda-input-wrapper">
+          <span>R$</span>
+          <input type="text" id="inputRenda" placeholder="0,00">
+        </div>
+      </div>
+    </div>
+
+    <div class="sliders-wrapper">
+      <div class="slider-container" data-tooltip="Despesas essenciais e fixas. Ex: Aluguel, contas de luz/água, transporte, Financiamento, alimentação básica.">
+        <label for="meta-custo">
+          <span class="slider-title">Custo fixo</span>
+          <span class="slider-recommendation">(Recomendado Maximo 40%)</span>
+          <span class="slider-value" id="val-custo">40%</span>
+        </label>
+        <input type="range" min="0" max="100" id="meta-custo" value="40" oninput="atualizaSlider(this)">
+      </div>
+      <div class="slider-container" data-tooltip="Gastos para melhorar seu bem-estar diário e pequenas conveniências. Ex: Assinaturas de streaming, academia, eletrodomésticos, pequenos mimos.">
+        <label for="meta-conforto">
+          <span class="slider-title">Conforto</span>
+          <span class="slider-recommendation">(Recomendado Maximo 20%)</span>
+          <span class="slider-value" id="val-conforto">20%</span>
+        </label>
+        <input type="range" min="0" max="100" id="meta-conforto" value="20" oninput="atualizaSlider(this)">
+      </div>
+      <div class="slider-container" data-tooltip="Investimentos em educação, cursos, livros ou workshops para seu desenvolvimento pessoal e profissional.">
+        <label for="meta-conhecimento">
+          <span class="slider-title">Conhecimento</span>
+          <span class="slider-recommendation">(Recomendado 5%)</span>
+          <span class="slider-value" id="val-conhecimento">5%</span>
+        </label>
+        <input type="range" min="0" max="100" id="meta-conhecimento" value="5" oninput="atualizaSlider(this)">
+      </div>
+      <div class="slider-container" data-tooltip="Pequeninos presentes para si: sair com os amigos, iFood, cinema, eventos, eletrônicos. Permite ter momentos de alegria sem comprometer o orçamento.">
+        <label for="meta-prazer">
+          <span class="slider-title">Prazeres</span>
+          <span class="slider-recommendation">(Recomendado 10%)</span>
+          <span class="slider-value" id="val-prazer">10%</span>
+        </label>
+        <input type="range" min="0" max="100" id="meta-prazer" value="10" oninput="atualizaSlider(this)">
+      </div>
+      <div class="slider-container" data-tooltip="Economias e investimentos para construir segurança financeira e independência futura. Ex: reserva de emergência, aposentadoria, investimentos de longo prazo.">
+        <label for="meta-liberdade">
+          <span class="slider-title">Liberdade Financeira</span>
+          <span class="slider-recommendation">(15% a 25%)</span>
+          <span class="slider-value" id="val-liberdade">20%</span>
+        </label>
+        <input type="range" min="0" max="100" id="meta-liberdade" value="20" oninput="atualizaSlider(this)">
+      </div>
+      <div class="slider-container" data-tooltip="Verba destinada a objetivos específicos de curto ou médio prazo. Ex: compra de carro, entrada de imóvel, intercâmbio, grandes viagens.">
+        <label for="meta-metas">
+          <span class="slider-title">Metas</span>
+          <span class="slider-recommendation">(5% a 15%)</span>
+          <span class="slider-value" id="val-metas">5%</span>
+        </label>
+        <input type="range" min="0" max="100" id="meta-metas" value="5" oninput="atualizaSlider(this)">
+      </div>
+    </div>
+    <div class="author-signature">Desenvolvido por Alice de Sá</div>
+  </div>
+
+  <div id="tela2" class="hidden">
+    <h1>Orçamento Doméstico</h1>
+
+    <div class="tela2-header-buttons">
+    </div>
+
+    <div class="tela2-top-panels">
+      <div class="grafico-container">
+        <div class="grafico-wrapper">
+          <div class="total-no-donut" id="total-porcentagem-tela2">100%</div>
+          <canvas id="graficoTela2"></canvas>
+        </div>
+        <ul class="legenda">
+          <li><span class="legenda-cor" style="background-color: #3498db;"></span>Custo fixo</li>
+          <li><span class="legenda-cor" style="background-color: #1abc9c;"></span>Conforto</li>
+          <li><span class="legenda-cor" style="background-color: #9b59b6;"></span>Conhecimento</li>
+          <li><span class="legenda-cor" style="background-color: #f39c12;"></span>Prazeres</li>
+          <li><span class="legenda-cor" style="background-color: #2ecc71;"></span>Liberdade Financeira</li>
+          <li><span class="legenda-cor" style="background-color: #f1c40f;"></span>Metas</li>
+        </ul>
+      </div>
+
+      <div class="card-section" id="resumoGastosCategoria">
+        <h2>Resumo de Gastos por Categoria</h2>
+        <div class="tabela-resumo-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Categoria</th>
+                <th>Orçado (R$)</th>
+                <th>Real (R$)</th>
+                <th>Diferença (R$)</th>
+              </tr>
+            </thead>
+            <tbody id="tabelaResumo"></tbody>
+          </table>
+        </div>
+        <div class="total-resumo-inferior">
+          <div>
+            <span class="valor-total green-text" id="total-orcado-label">R$ 0,00</span>
+            <span class="label-total">A gastar</span>
+          </div>
+          <div>
+            <span class="valor-total" id="total-real-label">R$ 0,00</span>
+            <span class="label-total">Total gasto</span>
+          </div>
+          <div>
+            <span class="valor-total" id="diferenca-percentual-label">0.00%</span>
+            <span class="label-total">Utilizado</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-section" id="metasValoresFixos">
+      </div>
+    </div>
+
+    <h2 class="secao-titulo">Edite Seus Custos</h2>
+
+    <div id="detalhamentoCategorias">
+    </div>
+
+    <div id="bottom-right-buttons-container">
+      <button class="download-img" onclick="baixarImagemTela2()">Baixar Imagem</button>
+      <button class="exportar" onclick="exportarDados()">Exportar Dados</button>
+      <button class="importar" onclick="document.getElementById('importFileInput').click()">Importar Dados</button>
+    </div>
+    <div class="author-signature">Desenvolvido por Alice de Sá</div>
+  </div>
+
+  <input type="file" id="importFileInput" accept=".json" class="hidden" onchange="importarDados(event)">
+
+</body>
+
+</html>
