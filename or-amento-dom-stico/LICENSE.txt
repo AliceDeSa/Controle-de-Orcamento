@@ -1,6 +1,7 @@
 The MIT License (MIT)
 
-Copyright (c) 2025 Alice (https://codepen.io/Alice-Sa/pen/vEOQRgr)
+Copyright (c) 2025 Alice (https://codepen.io/Alice-Sa/pen/jEPXGgd)
+Fork of an original work Orçamento doméstico (https://codepen.io/Alice-Sa/pen/vEOQRgr)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

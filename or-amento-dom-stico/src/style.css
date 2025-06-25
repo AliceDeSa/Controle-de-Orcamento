@@ -1,10 +1,18 @@
+/* =====================================================
+   Variáveis Globais
+   ===================================================== */
 :root {
   --card-background: #2b2f36;
 }
 
+/* =====================================================
+   Layout Geral do Body
+   ===================================================== */
+html,
 body {
-  background-color: #1b1f24;
-  color: white;
+  background: #1b1f24 !important;
+  background-color: #1b1f24 !important;
+  color: #fff;
   font-family: "Segoe UI", sans-serif;
   padding: 15px;
   margin: 0;
@@ -13,10 +21,14 @@ body {
   flex-direction: column;
 }
 
+/* Utilitário para esconder elementos */
 .hidden {
   display: none !important;
 }
 
+/* =====================================================
+   Estrutura Principal da Tela
+   ===================================================== */
 .screen-container {
   flex-grow: 1;
   display: grid;
@@ -30,6 +42,9 @@ body {
   position: relative; /* Necessário para posicionar a assinatura */
 }
 
+/* =====================================================
+   Cabeçalho Principal
+   ===================================================== */
 .main-header {
   grid-column: 1 / -1;
   display: flex;
@@ -85,6 +100,9 @@ body {
   gap: 8px;
 }
 
+/* =====================================================
+   Botões Gerais
+   ===================================================== */
 button {
   color: white;
   border: none;
@@ -140,6 +158,9 @@ button.exportar:hover {
   transform: translateY(-1px);
 }
 
+/* =====================================================
+   Mensagens de Feedback
+   ===================================================== */
 .feedback-message {
   margin-top: 0;
   padding: 8px;
@@ -173,6 +194,9 @@ button.exportar:hover {
   color: white;
 }
 
+/* =====================================================
+   Coluna Esquerda (Gráfico e Renda)
+   ===================================================== */
 .left-column-content {
   grid-column: 1;
   grid-row: 2;
@@ -204,8 +228,8 @@ button.exportar:hover {
 
 .grafico-wrapper {
   position: relative;
-  width: 280px;
-  height: 280px;
+  width: 240px;
+  height: 240px;
   margin-bottom: 1rem;
 }
 
@@ -254,6 +278,9 @@ button.exportar:hover {
   flex-shrink: 0;
 }
 
+/* =====================================================
+   Renda Mensal
+   ===================================================== */
 .renda-container {
   background-color: var(--card-background);
   padding: 0.8rem;
@@ -266,7 +293,6 @@ button.exportar:hover {
   flex-shrink: 0;
 }
 
-/* Novo estilo para o título da renda */
 .renda-container .renda-title {
   margin: 0 0 0.2rem 0;
   color: white;
@@ -282,7 +308,7 @@ button.exportar:hover {
 }
 
 .renda-input-wrapper span {
-  font-size: 1.4rem;
+  font-size: 2rem;
   font-weight: bold;
   color: #2ecc71;
 }
@@ -298,6 +324,9 @@ button.exportar:hover {
   text-align: center;
 }
 
+/* =====================================================
+   Sliders das Metas (Tela 1)
+   ===================================================== */
 .sliders-wrapper {
   grid-column: 2;
   grid-row: 2;
@@ -329,7 +358,6 @@ button.exportar:hover {
   font-weight: bold;
 }
 
-/* Aumento do tamanho da fonte dos títulos das barras na Tela 1 */
 .slider-title {
   font-weight: bold;
   font-size: 1.3rem;
@@ -361,6 +389,7 @@ button.exportar:hover {
   background: #444;
 }
 
+/* Gradiente de preenchimento dos sliders */
 .slider-container input[type="range"]::-webkit-slider-runnable-track {
   height: 7px;
   background: linear-gradient(
@@ -385,6 +414,7 @@ button.exportar:hover {
   background: var(--slider-color);
 }
 
+/* Cores dos sliders por categoria */
 #meta-custo {
   --slider-color: #3498db;
 }
@@ -409,7 +439,9 @@ button.exportar:hover {
   --slider-color: #f1c40f;
 }
 
-/* Tooltips para os sliders da Tela 1 e títulos da Tela 2 */
+/* =====================================================
+   Tooltips (Dicas de Ajuda)
+   ===================================================== */
 .tooltip {
   visibility: hidden;
   opacity: 0;
@@ -443,21 +475,22 @@ button.exportar:hover {
   border-color: #555 transparent transparent transparent;
 }
 
-/* Estilo para o hover do slider-container (Tela 1) */
+/* Exibe tooltip ao passar o mouse */
 .slider-container:hover .tooltip {
   visibility: visible;
   opacity: 1;
   transform: translate(-50%, -115%); /* Move para cima no hover */
 }
 
-/* Estilo para o hover do card-section h2 (Tela 2) */
 .card-section h2[data-tooltip]:hover .tooltip {
   visibility: visible;
   opacity: 1;
   transform: translate(-50%, calc(-100% - 15px)); /* Acima do h2 */
 }
 
-/* Estilos da TELA 2 */
+/* =====================================================
+   TELA 2 - Orçamento Doméstico
+   ===================================================== */
 #tela2 {
   grid-column: 1 / -1;
   padding: 15px;
@@ -488,6 +521,9 @@ button.exportar:hover {
   margin-top: 0;
 }
 
+/* =====================================================
+   Cards e Seções da Tela 2
+   ===================================================== */
 .card-section {
   background-color: var(--card-background);
   padding: 1rem;
@@ -514,6 +550,9 @@ button.exportar:hover {
   z-index: 1;
 }
 
+/* =====================================================
+   Metas Valores Fixos (Resumo)
+   ===================================================== */
 #metasValoresFixos {
   display: flex;
   flex-direction: column;
@@ -539,6 +578,9 @@ button.exportar:hover {
   white-space: nowrap;
 }
 
+/* =====================================================
+   Inputs e Grupos de Campos
+   ===================================================== */
 .input-field-group {
   display: flex;
   flex-direction: column;
@@ -572,6 +614,9 @@ button.exportar:hover {
   outline: none;
 }
 
+/* =====================================================
+   Detalhamento de Categorias e Listas de Gastos
+   ===================================================== */
 #detalhamentoCategorias {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -587,10 +632,11 @@ button.exportar:hover {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 10px;
-  align-items: end;
+  align-items: center;
   margin-top: 12px;
   padding-top: 10px;
   border-top: 1px dashed #3b3f46;
+  align-items: center;
 }
 
 .add-item-controls .input-field-group:first-child {
@@ -601,31 +647,33 @@ button.exportar:hover {
   grid-column: 1 / 2;
 }
 
-.add-item-controls button.adicionar {
-  padding: 10px 14px;
-  height: fit-content;
-  margin-top: 0;
+.add-item-controls input[type="text"] {
+  height: 40px;
   font-size: 1rem;
-  grid-column: 2 / 3;
-  align-self: flex-end;
-  min-width: 100px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 12px;
+  vertical-align: middle;
 }
 
-@media (max-width: 768px) {
-  .add-item-controls {
-    grid-template-columns: 1fr;
-  }
-
-  .add-item-controls button.adicionar {
-    grid-column: 1 / -1;
-    width: 100%;
-  }
-
-  .add-item-controls .input-field-group:last-child {
-    grid-column: 1 / -1;
-  }
+.add-item-controls button.adicionar {
+  position: relative;
+  top: 10px;
+  height: 40px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  border-width: 1px;
 }
 
+/* =====================================================
+   Listas de Itens e Subtotais
+   ===================================================== */
 .category-items-list {
   list-style: none;
   padding: 0;
@@ -691,6 +739,9 @@ button.exportar:hover {
   color: #2ecc71;
 }
 
+/* =====================================================
+   Tabela de Resumo e Totais
+   ===================================================== */
 .tabela-resumo-container {
   overflow-x: auto;
 }
@@ -720,7 +771,6 @@ table th {
   z-index: 1;
 }
 
-/* Remover a borda da última linha do tbody para não conflitar com a nova seção de total */
 table tbody tr:last-child td {
   border-bottom: none;
 }
@@ -729,7 +779,7 @@ table tbody tr:nth-child(even) {
   background-color: #30353c;
 }
 
-/* Estilo para a nova seção total abaixo da tabela de resumo */
+/* Seção de totais abaixo da tabela de resumo */
 .total-resumo-inferior {
   display: grid;
   grid-template-columns: repeat(
@@ -768,6 +818,9 @@ table tbody tr:nth-child(even) {
   color: #e74c3c;
 }
 
+/* =====================================================
+   Painéis Superiores da Tela 2
+   ===================================================== */
 .tela2-top-panels {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -779,15 +832,12 @@ table tbody tr:nth-child(even) {
   .tela2-top-panels {
     grid-template-columns: 1fr 2fr 1fr;
   }
-
   .tela2-top-panels .grafico-container {
     grid-column: 1 / 2;
   }
-
   .tela2-top-panels #resumoGastosCategoria {
     grid-column: 2 / 3;
   }
-
   .tela2-top-panels #metasValoresFixos {
     grid-column: 3 / 4;
   }
@@ -850,7 +900,9 @@ table tbody tr:nth-child(even) {
   gap: 0;
 }
 
-/* Assinatura do autor no canto inferior direito */
+/* =====================================================
+   Assinatura do Autor
+   ===================================================== */
 .author-signature {
   grid-column: 1 / -1; /* Ocupa todas as colunas */
   align-self: end; /* Alinha ao final da linha do grid */
@@ -862,7 +914,9 @@ table tbody tr:nth-child(even) {
   border-top: 1px solid #3b3f46;
 }
 
-/* Responsividade para telas menores (TELA 2) */
+/* =====================================================
+   Responsividade (Media Queries)
+   ===================================================== */
 @media (max-width: 768px) {
   body {
     padding: 10px;
@@ -1139,8 +1193,8 @@ table tbody tr:nth-child(even) {
   }
 
   .grafico-wrapper {
-    width: 260px;
-    height: 260px;
+    width: 220px;
+    height: 220px;
   }
 
   .total-no-donut {
