@@ -573,7 +573,9 @@ function renderizarSecoesGastos() {
                                         <input type="text" id="descricao-${nomeDisplay.replace(
                                           /\s/g,
                                           ""
-                                        )}" placeholder="${metaInfo.placeholder}">
+                                        )}" placeholder="${
+      metaInfo.placeholder
+    }">
                                     </div>
                                     <div class="input-field-group">
                                         <label for="valorGasto-${nomeDisplay.replace(

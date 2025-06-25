@@ -8,7 +8,8 @@
 /* =====================================================
    Layout Geral do Body
    ===================================================== */
-html, body {
+html,
+body {
   background: #1b1f24 !important;
   background-color: #1b1f24 !important;
   color: #fff;
@@ -781,7 +782,10 @@ table tbody tr:nth-child(even) {
 /* Seção de totais abaixo da tabela de resumo */
 .total-resumo-inferior {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 colunas para Orçado, Real, Diferença */
+  grid-template-columns: repeat(
+    3,
+    1fr
+  ); /* 3 colunas para Orçado, Real, Diferença */
   gap: 10px;
   padding-top: 15px; /* Espaço em cima */
   margin-top: 10px;
