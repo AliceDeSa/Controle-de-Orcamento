@@ -1,57 +1,60 @@
+// =====================================================
+// Definição das Categorias de Metas e Variáveis Globais
+// =====================================================
 const categoriasMetas = {
   "meta-custo": {
     label: "Custo fixo",
     initialValue: 40,
     color: "#3498db",
-    // Removendo a recomendação duplicada daqui, pois já está no HTML
+    recommendation: "(50% a 60%)",
     description:
       "Despesas essenciais e fixas. Ex: Aluguel, contas de luz/água, transporte, Financiamento, alimentação básica.",
-    placeholder: "Ex: Aluguel, conta de luz" // Novo: Placeholder para a Tela 2
+    placeholder: "Ex: Aluguel, Luz, Água"
   },
   "meta-conforto": {
     label: "Conforto",
     initialValue: 20,
     color: "#1abc9c",
-    // Removendo a recomendação duplicada daqui
+    recommendation: "(10% a 20%)",
     description:
       "Gastos para melhorar seu bem-estar diário e pequenas conveniências. Ex: Assinaturas de streaming, academia, eletrodomésticos, pequenos mimos.",
-    placeholder: "Ex: Academia, Netflix" // Novo: Placeholder para a Tela 2
+    placeholder: "Ex: Netflix, Academia, Delivery"
   },
   "meta-conhecimento": {
     label: "Conhecimento",
     initialValue: 5,
     color: "#9b59b6",
-    // Removendo a recomendação duplicada daqui
+    recommendation: "(5% a 10%)",
     description:
       "Investimentos em educação, cursos, livros ou workshops para seu desenvolvimento pessoal e profissional.",
-    placeholder: "Ex: Curso de inglês, livros" // Novo: Placeholder para a Tela 2
+    placeholder: "Ex: Curso, Livro, Workshop"
   },
   "meta-prazer": {
     label: "Prazeres",
-    initialValue: 5,
+    initialValue: 10,
     color: "#f39c12",
-    // Removendo a recomendação duplicada daqui
+    recommendation: "(5% a 10%)",
     description:
-      "Pequeninos presentes para si: sair com os amigos, iFood, cinema, eventos, eletrônicos. Permite ter momentos de alegria sem comprometer o orçamento.",
-    placeholder: "Ex: Jantar fora, cinema,iFood" // Novo: Placeholder para a Tela 2
+      "Dinheiro para hobbies, viagens, experiências e luxos que trazem alegria. Ex: jantares fora, eventos, eletrônicos.",
+    placeholder: "Ex: Cinema, Viagem, Jantar"
   },
   "meta-liberdade": {
     label: "Liberdade Financeira",
-    initialValue: 25,
+    initialValue: 20,
     color: "#2ecc71",
-    // Removendo a recomendação duplicada daqui
+    recommendation: "(15% a 25%)",
     description:
-      "Economias e investimentos para construir segurança financeira e independência futura. Ex: Reserva de emergência, aposentadoria, investimentos de longo prazo.",
-    placeholder: "Ex: Reserva de emergência" // Novo: Placeholder para a Tela 2
+      "Economias e investimentos para construir segurança financeira e independência futura. Ex: reserva de emergência, aposentadoria, investimentos de longo prazo.",
+    placeholder: "Ex: Poupança, Ações, Previdência"
   },
   "meta-metas": {
     label: "Metas",
     initialValue: 5,
     color: "#f1c40f",
-    // Removendo a recomendação duplicada daqui
+    recommendation: "(5% a 15%)",
     description:
       "Verba destinada a objetivos específicos de curto ou médio prazo. Ex: compra de carro, entrada de imóvel, intercâmbio, grandes viagens.",
-    placeholder: "Ex: Viagem, entrada do carro" // Novo: Placeholder para a Tela 2
+    placeholder: "Ex: Carro, Viagem, Imóvel"
   }
 };
 const MIN_RENDA = 1518;
@@ -66,7 +69,11 @@ let gastosReais = {
   "Liberdade Financeira": [],
   Metas: []
 };
-// --- Funções da TELA 1 ---
+
+// =====================================================
+// Funções de atualização de sliders, feedback e validação de metas
+// -----------------------------------------------------
+
 function atualizaSlider(slider) {
   const id = slider.id.replace("meta-", "val-");
   document.getElementById(id).textContent = `${slider.value}%`;
@@ -184,6 +191,11 @@ function obterRotulosCategorias() {
   return Object.values(categoriasMetas).map((meta) => meta.label);
 }
 
+// =====================================================
+// Funções de Gráficos (Chart.js)
+// =====================================================
+// Funções para criar e atualizar os gráficos de pizza das telas
+
 function criarGraficoPizza(ctx, instanceVarName) {
   const data = obterDadosSliders();
   const labels = obterRotulosCategorias();
@@ -242,6 +254,11 @@ function atualizarGraficoTela2() {
   criarGraficoPizza(ctx2, "graficoTela2Instance");
 }
 
+// =====================================================
+// Funções de Armazenamento Local (localStorage)
+// =====================================================
+// Carregamento e salvamento de dados do usuário
+
 function carregarValoresSalvos() {
   const metasSalvas = localStorage.getItem("metasUsuario");
   if (metasSalvas) {
@@ -286,24 +303,26 @@ function carregarValoresSalvos() {
   }
 }
 
+// =====================================================
+// Funções de Tooltips e Utilitários de Formatação
+// =====================================================
+// Funções para tooltips, formatação de valores e inputs
+
 function setupSliderTooltip(sliderContainer) {
-  // A descrição já está no HTML, o JS não precisa adicionar o tooltip para os sliders da tela 1
-  // Removido o código que criava o tooltip aqui para evitar duplicação.
-  // O tooltip da Tela 1 é gerenciado puramente via CSS e o atributo data-tooltip no HTML.
+  const tooltipText = sliderContainer.getAttribute("data-tooltip");
+  if (!tooltipText) return;
+  const tooltipDiv = document.createElement("div");
+  tooltipDiv.className = "tooltip";
+  tooltipDiv.textContent = tooltipText;
+  sliderContainer.appendChild(tooltipDiv);
 }
 
-// Função para adicionar tooltips aos títulos das categorias na Tela 2
 function setupCategoryTooltip(element, tooltipText) {
-  // Verifique se o tooltip já existe para evitar duplicação se a função for chamada múltiplas vezes
-  if (element.querySelector(".tooltip")) {
-    element.querySelector(".tooltip").textContent = tooltipText;
-    return;
-  }
   const tooltipDiv = document.createElement("div");
   tooltipDiv.className = "tooltip";
   tooltipDiv.textContent = tooltipText;
   element.appendChild(tooltipDiv);
-  element.setAttribute("data-tooltip", tooltipText); // Para o CSS poder aplicar o hover
+  element.setAttribute("data-tooltip", tooltipText);
 }
 
 function formatarValorParaExibicao(valorNumerico) {
@@ -387,7 +406,10 @@ function formatarRendaAoSairFoco(event) {
   }
   input.value = formatarValorParaExibicao(numericValue);
 }
-// --- Funções da TELA 2 ---
+
+// =====================================================
+// Funções de formatação de valores de gastos (usadas dinamicamente)
+// =====================================================
 function formatarValorGastoAoDigitar(event) {
   const input = event.target;
   let value = input.value;
@@ -454,6 +476,11 @@ function limparValorGastoAoFocar(event) {
   input.select();
 }
 
+// =====================================================
+// Funções da TELA 2: Orçamento Doméstico
+// =====================================================
+// Renderização de categorias, itens, totais e manipulação de gastos
+
 function mostrarTela2() {
   const rendaSalva = localStorage.getItem("rendaMensal");
   const metasSalvas = localStorage.getItem("metasUsuario");
@@ -505,9 +532,9 @@ function renderizarMetasValoresFixos() {
   const metas = JSON.parse(localStorage.getItem("metasUsuario"));
   const metasValoresFixosDiv = document.getElementById("metasValoresFixos");
   let htmlContent = `
-            <h2>Metas</h2>
-            <div class="card-content">
-        `;
+        <h2>Metas</h2>
+        <div class="card-content">
+    `;
   for (const chave in categoriasMetas) {
     const nomeDisplay = categoriasMetas[chave].label;
     const percentual = metas[chave];
@@ -528,58 +555,56 @@ function renderizarSecoesGastos() {
     const metaInfo = categoriasMetas[chaveMeta];
     const nomeDisplay = metaInfo.label;
     const description = metaInfo.description;
-    const placeholderText = metaInfo.placeholder; // Obtém o placeholder da categoria
-
     const sectionHtml = `
-                                    <div class="card-section">
-                                        <h2 id="title-${nomeDisplay.replace(
+                            <div class="card-section">
+                                <h2 id="title-${nomeDisplay.replace(
+                                  /\s/g,
+                                  ""
+                                )}">
+                                    ${nomeDisplay}
+                                </h2>
+                                
+                                <div class="add-item-controls">
+                                    <div class="input-field-group">
+                                        <label for="descricao-${nomeDisplay.replace(
                                           /\s/g,
                                           ""
-                                        )}">
-                                            ${nomeDisplay}
-                                        </h2>
-                                        
-                                        <div class="add-item-controls">
-                                            <div class="input-field-group">
-                                                <label for="descricao-${nomeDisplay.replace(
-                                                  /\s/g,
-                                                  ""
-                                                )}">Descrição:</label>
-                                                <input type="text" id="descricao-${nomeDisplay.replace(
-                                                  /\s/g,
-                                                  ""
-                                                )}" placeholder="${placeholderText}">
-                                            </div>
-                                            <div class="input-field-group">
-                                                <label for="valorGasto-${nomeDisplay.replace(
-                                                  /\s/g,
-                                                  ""
-                                                )}">Valor (R$):</label>
-                                                <input type="text" id="valorGasto-${nomeDisplay.replace(
-                                                  /\s/g,
-                                                  ""
-                                                )}" placeholder="Ex: 150,00">
-                                            </div>
-                                            <button class="adicionar" 
-                                                onclick="adicionarItemGasto('${nomeDisplay}')">Adicionar</button>
-                                        </div>
+                                        )}">Descrição:</label>
+                                        <input type="text" id="descricao-${nomeDisplay.replace(
+                                          /\s/g,
+                                          ""
+                                        )}" placeholder="${metaInfo.placeholder}">
+                                    </div>
+                                    <div class="input-field-group">
+                                        <label for="valorGasto-${nomeDisplay.replace(
+                                          /\s/g,
+                                          ""
+                                        )}">Valor (R$):</label>
+                                        <input type="text" id="valorGasto-${nomeDisplay.replace(
+                                          /\s/g,
+                                          ""
+                                        )}" placeholder="Ex: 150,00">
+                                    </div>
+                                    <button class="adicionar" 
+                                        onclick="adicionarItemGasto('${nomeDisplay}')">Adicionar</button>
+                                </div>
 
-                                        <ul class="category-items-list" id="list-${nomeDisplay.replace(
-                                          /\s/g,
-                                          ""
-                                        )}">
-                                        </ul>
-                                        <div class="category-subtotal-line">
-                                            <span>Total Gasto:</span>
-                                            <span id="subtotal-${nomeDisplay.replace(
-                                              /\s/g,
-                                              ""
-                                            )}">R$ ${formatarValorParaExibicao(
+                                <ul class="category-items-list" id="list-${nomeDisplay.replace(
+                                  /\s/g,
+                                  ""
+                                )}">
+                                </ul>
+                                <div class="category-subtotal-line">
+                                    <span>Total Gasto:</span>
+                                    <span id="subtotal-${nomeDisplay.replace(
+                                      /\s/g,
+                                      ""
+                                    )}">R$ ${formatarValorParaExibicao(
       0
     )}</span>
-                                        </div>
-                                    </div>
-                                `;
+                                </div>
+                            </div>
+                        `;
     detalhamentoCategoriasDiv.innerHTML += sectionHtml;
   }
   for (const chaveMeta in categoriasMetas) {
@@ -611,7 +636,8 @@ function adicionarItemGasto(categoriaNome) {
   const descricaoInput = document.getElementById(idDescricao);
   const valorInput = document.getElementById(idValor);
   const descricao = descricaoInput.value.trim();
-  const valor = parseFloat(valorInput.value.replace(",", ".") || "0");
+  let valorStr = valorInput.value.trim().replace(/\./g, "").replace(",", ".");
+  const valor = parseFloat(valorStr || "0");
   if (!descricao || isNaN(valor) || valor <= 0) {
     alert("Por favor, preencha a descrição e um valor válido para o gasto.");
     return;
@@ -698,13 +724,13 @@ function atualizarTabelaResumo() {
     }
 
     corpoTabela.innerHTML += `
-                <tr>
-                    <td>${nomeDisplay}</td>
-                    <td>R$ ${formatarValorParaExibicao(orcado)}</td>
-                    <td>R$ ${formatarValorParaExibicao(real)}</td>
-                    <td style="color: ${diferencaCor};">R$ ${diferencaFormatada}</td>
-                </tr>
-            `;
+            <tr>
+                <td>${nomeDisplay}</td>
+                <td>R$ ${formatarValorParaExibicao(orcado)}</td>
+                <td>R$ ${formatarValorParaExibicao(real)}</td>
+                <td style="color: ${diferencaCor};">R$ ${diferencaFormatada}</td>
+            </tr>
+        `;
   }
 
   // Atualiza a nova seção de totais abaixo da tabela
@@ -750,17 +776,18 @@ function voltarTela1() {
 function baixarImagemTela2() {
   const tela2Element = document.getElementById("tela2");
   const importFileInput = document.getElementById("importFileInput");
-  importFileInput.classList.add("hidden"); // Esconde o input file antes de capturar a imagem
+  importFileInput.classList.add("hidden");
 
   html2canvas(tela2Element, {
     scale: 2,
     logging: false,
     useCORS: true,
     windowWidth: tela2Element.scrollWidth,
-    windowHeight: tela2Element.scrollHeight
+    windowHeight: tela2Element.scrollHeight,
+    backgroundColor: "#1b1f24"
   })
     .then((canvas) => {
-      importFileInput.classList.remove("hidden"); // Mostra novamente o input file
+      importFileInput.classList.remove("hidden");
 
       const link = document.createElement("a");
       link.download = "orcamento_domestico.png";
@@ -769,7 +796,7 @@ function baixarImagemTela2() {
     })
     .catch((error) => {
       console.error("Erro ao gerar imagem:", error);
-      importFileInput.classList.remove("hidden"); // Mostra novamente o input file em caso de erro
+      importFileInput.classList.remove("hidden");
       alert("Ocorreu um erro ao baixar a imagem. Tente novamente.");
     });
 }
@@ -834,6 +861,11 @@ function importarDados(event) {
   event.target.value = "";
 }
 
+// =====================================================
+// Inicialização do Sistema (window.onload)
+// =====================================================
+// Configura eventos, carrega valores e inicializa gráficos ao abrir a página
+
 window.onload = function () {
   carregarValoresSalvos();
   document.querySelectorAll("input[type=range]").forEach((slider) => {
@@ -843,10 +875,9 @@ window.onload = function () {
   });
   atualizarGraficoPizza();
   atualizarTotal();
-  // Não precisamos mais do setupSliderTooltip para a Tela 1, pois já está no HTML
-  // document.querySelectorAll(".slider-container").forEach((container) => {
-  //   setupSliderTooltip(container);
-  // });
+  document.querySelectorAll(".slider-container").forEach((container) => {
+    setupSliderTooltip(container);
+  });
   const inputRenda = document.getElementById("inputRenda");
   inputRenda.addEventListener("input", formatarRendaAoDigitar);
   inputRenda.addEventListener("blur", formatarRendaAoSairFoco);
